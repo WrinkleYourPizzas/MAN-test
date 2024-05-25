@@ -1,6 +1,6 @@
 from scipy.io import loadmat
 import matplotlib.pyplot as plt
-from MAN import MAN, man_l, man_s, man_m
+from mans_v2 import MAN, man_l, man_s, man_m
 import torch
 from torchvision import transforms
 
@@ -8,8 +8,6 @@ transform = transforms.Compose([
     transforms.Resize((64, 64)),
 ])
 
-# net = MAN(1, 16, 5, [1,3])
-# net = man()
 net = man_m()
 net.load_state_dict(torch.load("man_m_gaussian.pth")["net"])
 net.to("cuda")
@@ -21,6 +19,7 @@ data = data.permute(2, 0, 1)
 
 input_data = transform(data)
 data = input_data.reshape(1, 1, input_data.shape[0], input_data.shape[1], input_data.shape[2]).to("cuda")
+test_data = torch.randn(4, 1, 31, 64, 64).to("cuda")
 
 output = net(data)
 
